@@ -1,5 +1,5 @@
 %generate all environment in classes 
-
+%test
 classdef BasicObject
    properties
       location
