@@ -32,36 +32,51 @@ function GetDobot(self)
         name = ['LinearDobot_',datestr(now,'yyyymmddTHHMMSSFFF')];
 %     end
 
-    % Create the UR5 model mounted on a linear rail
-    
-    L(1) = Link([0      0.080  0       pi/2   0]);
-    L(2) = Link([0      0      0.135   0      0]);
-    L(3) = Link([0      0      0.160   0      0]);
-    L(4) = Link([0      0      0       0      0]);
+
    
+
+
+     L(1) = Link([0      0.138      0   -pi/2      0]);
+
+     L(2) = Link([0      0      0.135      0      0]);
+     L(3) = Link([0      0     0      0    0]);
+       L(4) = Link([0      0      0      0   0]);
+
     
+
+
     % Incorporate joint limits
     
-    L(1).qlim = [-90 90]*pi/180;
-    L(2).qlim = [0 85]*pi/180;
-    L(3).qlim = [-10 90]*pi/180;
+   
+    L(1).qlim = [-135 135]*pi/180;
+     L(2).qlim = [5 80]*pi/180;
+     L(3).qlim = [15 170]*pi/180;
     L(4).qlim = [-90 90]*pi/180;
-  
+%     L(5).qlim = [-85 85]*pi/180;
+ 
+     L(1).offset = 0;
+ 
+    L(2).offset = -pi/2;
+%      L(3).offset = pi;
+ 
+
+
     self.model = SerialLink(L,'name',name);
     
     % Rotate robot to the correct orientation
-    self.model.base = self.model.base * trotx(pi/2) * troty(pi/2);
+%       self.model.base = self.model.base * trotx(pi/2) * troty(pi/2);
 end
 %% PlotAndColourRobot
 % Given a robot index, add the glyphs (vertices and faces) and
 % colour them in if data is available 
 function PlotAndColourRobot(self)%robot,workspace)
     for linkIndex = 0:self.model.n
-        display('test1');
+        disp(['Index',num2str(linkIndex)]);
         if self.useGripper && linkIndex == self.model.n
-            [ faceData, vertexData, plyData{linkIndex+1} ] = plyread(['Dobotjoint',num2str(linkIndex),'Dobot_gripper.ply'],'tri'); %#ok<AGROW>
+            [ faceData, vertexData, plyData{linkIndex+1} ] = plyread(['Dobotjoint',num2str(linkIndex),'Gripper.ply'],'tri'); %#ok<AGROW>
         else
             [ faceData, vertexData, plyData{linkIndex+1} ] = plyread(['Dobotjoint',num2str(linkIndex),'.ply'],'tri'); %#ok<AGROW>
+            disp(['Joint',num2str(linkIndex)]);
         end
         self.model.faces{linkIndex+1} = faceData;
         self.model.points{linkIndex+1} = vertexData;
