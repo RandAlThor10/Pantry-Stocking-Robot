@@ -33,38 +33,36 @@ function GetDobot(self)
 %     end
 
 
-   
+    L(1) = Link([0      0.138  0        -pi/2  0]);
+    L(2) = Link([0      0      0.135    0      0]);   
+    L(3) = Link([0      0      0.147    0      0]);
+    L(4) = Link([0      0      0.075     -pi/2   0]);
+    L(5) = Link([0     0.1     0        0      0]);
 
 
-     L(1) = Link([0      0.138      0   -pi/2      0]);
-
-     L(2) = Link([0      0      0.135      0      0]);
-     L(3) = Link([0      0     0      0    0]);
-       L(4) = Link([0      0      0      0   0]);
-
-    
 
 
     % Incorporate joint limits
     
    
     L(1).qlim = [-135 135]*pi/180;
-     L(2).qlim = [5 80]*pi/180;
-     L(3).qlim = [15 170]*pi/180;
+    L(2).qlim = [5 80]*pi/180;
+    L(3).qlim = [15 170]*pi/180;
     L(4).qlim = [-90 90]*pi/180;
-%     L(5).qlim = [-85 85]*pi/180;
+    L(5).qlim = [-85 85]*pi/180;
  
+
      L(1).offset = 0;
- 
-    L(2).offset = -pi/2;
-%      L(3).offset = pi;
+     L(2).offset = -pi/2;
+
+
  
 
 
     self.model = SerialLink(L,'name',name);
-    
+  
     % Rotate robot to the correct orientation
-%       self.model.base = self.model.base * trotx(pi/2) * troty(pi/2);
+%          self.model.base = self.model.base * troty(pi);
 end
 %% PlotAndColourRobot
 % Given a robot index, add the glyphs (vertices and faces) and
