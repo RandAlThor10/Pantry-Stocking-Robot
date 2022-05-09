@@ -1,18 +1,45 @@
 
 close all
+clear all
 set(0,'DefaultFigureWindowStyle','docked')
 clc
 
-q1 = 0;
-q2 = 5;
-q3 = 90 - q2 + 20;
-q4 = 180 - q2 - q3;
+
+
+
+
+ %% Ikine James Poon
+
+
+a2 = 0.135;
+a3 = 0.147;
+
+
+x = 0.17;    % X location
+y = 0.0;      % Y location
+z = 0.27 - 0.138 ;    % Z location
+
+l = sqrt(x^2 + y^2);
+D = sqrt(l^2 + z^2);
+
+t1 = rad2deg(atan(z/l));
+t2 = rad2deg(acos((a2^2 + D^2 - a3^2) / (2 * a2 * D)));
+
+alpha = t1 + t2;
+beta = rad2deg(acos((a2^2 + a3^2 - D^2) / (2 * a2 * a3)));
+
+q1 = rad2deg(atan(y/x));
+q2 = (90 - alpha);
+q3r = (180 - beta - alpha);
+q3m = 90 - q2 + q3r;
+q4 =  q3r;
 q5 = 0;
+
 
 %% Launch Dobot
 
 close all
-clear all
+
 set(0,'DefaultFigureWindowStyle','docked')
 clc
 
@@ -23,10 +50,11 @@ R = LinearDobot(false);
 
 
 
+qr = [ 0 0 0 0 0];
 
+qe = [deg2rad(q1) deg2rad(q2) deg2rad(q3m) deg2rad(q4) deg2rad(q5)];
 
-% qe = [deg2rad(q1) deg2rad(q2) deg2rad(90) deg2rad(45) deg2rad(q5) ];%deg2rad(150) deg2rad(q5)
-R.model.offset = [ 0 0 0 0 0];
+R.model.offset = qe;
 r_pose = R.model.getpos()
 
 R.PlotAndColourRobot();
@@ -40,8 +68,8 @@ R.PlotAndColourRobot();
 % Dobot Model links
 %      L(1) = Link([0      0.138      0   -pi/2      0]);
 %      L(2) = Link([0      0      0.135     0      0]);
-%      L(3) = Link([0      0    0.147      0    0]);
-%      L(4) = Link([0      0      0.05      -pi/2  0]);
+%      L(3) = Link([0      0    0.147      pi    0]);
+%      L(4) = Link([0      0      0.05      pi/2  0]);
 %      L(5) = Link([0      0.1      0    0     0]);
 
 %% Testing Animation for model
@@ -65,8 +93,8 @@ end
    %% Dobot Stick Links (Not the same as the Model Link, Needs to be fixed to match)
 
 close all
-clear all
-clc
+
+
 
     L(1) = Link([0      0.138  0        -pi/2  0]);
     L(2) = Link([0      0      0.135    0      0]);   
@@ -88,10 +116,11 @@ clc
 
 
 robot = SerialLink(L,'name','myrobot');
-q = [deg2rad(0) deg2rad(5) deg2rad(0) deg2rad(0) deg2rad(0)];%     
+q = [deg2rad(q1) deg2rad(q2) deg2rad(q3m) deg2rad(q4) deg2rad(q5)];%     
 qr = [0 0 0 0 0];
 
-robot.plot(qr);
+robot.plot(q);
+robot.fkine(q)
 robot.teach;
 
 %% Limit Test
@@ -149,4 +178,5 @@ robot.teach;
     imwrite(img.cdata, [titleStr{limitsIndex}, '.jpg']); 
   end 
   
+
  
