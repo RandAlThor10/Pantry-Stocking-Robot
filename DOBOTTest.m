@@ -11,13 +11,13 @@ clc
  %% Ikine James Poon
 
 
-a2 = 0.135;
-a3 = 0.147;
+a2 = 0.135;                % Length from Joint 2 to Joint 3
+a3 = 0.147;                % Length from Joint 3 to Joint 4
 
 
-x = 0.17;    % X location
-y = 0.0;      % Y location
-z = 0.27 - 0.138 ;    % Z location
+x = 0.17;                  % X location for Joint 4
+y = 0.0;                   % Y location for Joint 4
+z = 0.27 - 0.138 ;         % Z location for Joint 4
 
 l = sqrt(x^2 + y^2);
 D = sqrt(l^2 + z^2);
@@ -44,11 +44,6 @@ set(0,'DefaultFigureWindowStyle','docked')
 clc
 
 R = LinearDobot(false);
-                                              % Initial Joint State
-                                              % Returns Joint State
-
-
-
 
 qr = [ 0 0 0 0 0];
 
