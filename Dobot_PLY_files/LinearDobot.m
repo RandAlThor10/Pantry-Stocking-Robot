@@ -4,7 +4,7 @@ classdef LinearDobot < handle
         model;
         
         %>
-        workspace = [-2 2 -2 2 -0.3 2];   
+        workspace = [-1 1 -1 1 -0.3 1];   
         
         %> Flag to indicate if gripper is used
         useGripper = false;        
@@ -40,6 +40,13 @@ function GetDobot(self)
     L(5) = Link([0     0.1     0        0      0]);
 
 
+    % Test
+%     L(1) = Link([0      0      0        0      1]);
+%     L(2) = Link([0      0.138  0        -pi/2  0]);
+%     L(3) = Link([0      0      0.135    0      0]);   
+%     L(4) = Link([0      0      0.147    pi     0]);
+%     L(5) = Link([0      0      0.075    pi/2   0]);
+%     L(6) = Link([0     0.1     0        0      0]);
 
 
     % Incorporate joint limits
@@ -47,13 +54,20 @@ function GetDobot(self)
    
     L(1).qlim = [-135 135]*pi/180;
     L(2).qlim = [5 80]*pi/180;
-    L(3).qlim = [15 170]*pi/180;
+    L(3).qlim = [15 85]*pi/180;
     L(4).qlim = [-90 90]*pi/180;
     L(5).qlim = [-85 85]*pi/180;
- 
 
-     L(1).offset = 0;
-     L(2).offset = -pi/2;
+    % Test
+%     L(1).qlim = [-0.8 0];
+%     L(2).qlim = [-135 135]*pi/180;
+%     L(3).qlim = [5 80]*pi/180;
+%     L(4).qlim = [15 170]*pi/180;
+%     L(5).qlim = [-90 90]*pi/180;
+%     L(6).qlim = [-85 85]*pi/180;
+
+     L(2).offset = 0;
+     L(3).offset = -pi/2;
 
 
  
@@ -62,7 +76,9 @@ function GetDobot(self)
     self.model = SerialLink(L,'name',name);
   
     % Rotate robot to the correct orientation
-%           self.model.base = self.model.base * trotx(pi);
+
+%   self.model.base = self.model.base  * troty(-pi/2);
+
 end
 %% PlotAndColourRobot
 % Given a robot index, add the glyphs (vertices and faces) and
