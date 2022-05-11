@@ -3,12 +3,12 @@ clear
 %Zac was here
 %Load robot
 
-LinearDobot()
 
 
 %Load the Environment
 
-LoadEnvironment()
+%Item(i) = BasicObject([x,y,z],vertices,type)
+
 
 
 %run the robot
