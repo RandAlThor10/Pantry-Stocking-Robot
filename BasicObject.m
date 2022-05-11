@@ -5,13 +5,14 @@ classdef BasicObject
       location
       currentvertices
       originvertices
-      type %Environment or pantry item
+      type %Static = 0 or pantry item to be moved = 1
    end
    methods
-      function obj = BasicObject(val1, val2)
+      function obj = BasicObject(val1, val2,val3)
           obj.location = val1;
           obj.originvertices = val2;
           obj.currentvertices = [obj.originvertices, ones(size(obj.originvertices,1),1)]*transl(obj.location)
+          obj.type = val3
        end
    
       function move(obj,[newx,newy,newz],rotz)
