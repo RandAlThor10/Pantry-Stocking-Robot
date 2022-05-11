@@ -1,24 +1,40 @@
 %generate all environment in classes 
 %test
 classdef BasicObject
-   properties
+    properties
       location
-      currentvertices
-      originvertices
+      vertices
+      transformedvertices
+      ply
       type %Static = 0 or pantry item to be moved = 1
-   end
-   methods
-      function obj = BasicObject(val1, val2,val3)
-          obj.location = val1;
-          obj.originvertices = val2;
-          obj.currentvertices = [obj.originvertices, ones(size(obj.originvertices,1),1)]*transl(obj.location)
-          obj.type = val3
-       end
+    end
+    methods
+        function obj = BasicObject(val1,val2,val3)
+          obj.ply = PlaceObject(val1);
+          obj.location = val2;
+          obj.vertices = get(obj.ply,'Vertices');
+          obj.type = val3;
+          obj.transformedvertices = [obj.vertices, ones(size(obj.vertices,1),1)] *transl(obj.location(1,1),obj.location(1,2),obj.location(1,3))';
+          set(obj.ply,'Vertices',obj.transformedvertices(:,1:3));
+          
+         
+        end
    
-      function move(obj,[newx,newy,newz],rotz)
+        function move(obj,newlocation) % i.e. newlocation = [0.1,0.2,0.3]
          %move the location and meshs to a new position
-         obj.location = [newx,newy,newz]
-         obj.currentvertices = [obj.originvertices, ones(size(obj.originvertices,1),1)]*transl(newx,newy,newz)
-      end
-   end
+         obj.location = newlocation;
+         obj.transformedvertices = [obj.vertices, ones(size(obj.vertices,1),1)] *transl(obj.location(1,1),obj.location(1,2),obj.location(1,3))';
+         set(obj.ply,'Vertices',obj.transformedvertices(:,1:3));
+        end
+
+        function attach(obj,EEmatrix) % Used for transportation by robot
+
+         obj.location = EEmatrix;
+         obj.transformedvertices = [obj.vertices, ones(size(obj.vertices,1),1)] *obj.location';
+         set(obj.ply,'Vertices',obj.transformedvertices(:,1:3));
+
+
+
+        end    
+    end
 end

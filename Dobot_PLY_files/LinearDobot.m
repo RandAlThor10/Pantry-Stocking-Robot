@@ -53,8 +53,8 @@ function GetDobot(self)
     
    
     L(1).qlim = [-135 135]*pi/180;
-    L(2).qlim = [5 80]*pi/180;
-    L(3).qlim = [15 85]*pi/180;
+    L(2).qlim = [-5 85]*pi/180;
+    L(3).qlim = [-5 85]*pi/180;
     L(4).qlim = [-90 90]*pi/180;
     L(5).qlim = [-85 85]*pi/180;
 

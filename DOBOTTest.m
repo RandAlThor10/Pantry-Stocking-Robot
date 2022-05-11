@@ -5,13 +5,6 @@ set(0,'DefaultFigureWindowStyle','docked')
 clc
 
 
-%% TEst
-
-UR5R = UR5;
-
-qr = [0 -pi/2 0 -pi/2 -pi 0];
-UR5R.model.offset = qr;
-UR5R.PlotAndColourRobot();
 
 
 
@@ -30,7 +23,8 @@ qr = [ 0 0 0 0 0];
 qe = [deg2rad(0) deg2rad(-90) deg2rad(0) deg2rad(0) deg2rad(0)];
 
 Dobot.model.offset = qe;
-r_pose = Dobot.model.getpos()
+r_pose = Dobot.model.getpos();
+% Dobot.model.base = transl(0,0,0);
 
 tr1 = zeros(4,4,Dobot.model.n);
 tr1(:,:,1) = Dobot.model.base;
@@ -81,46 +75,87 @@ end
 
 
 robot.plot(qr);
-robot.fkine(qr)
+robot.fkine(qr);
 robot.teach;
+
+
+
+
+%% Objects
+
+hold on;
+
+
+ Cerealbox = BasicObject('Cereal_Box.ply',[0.1,0.3,0.0],1);
+
+ Shelf = BasicObject('Shelf.ply',[0.3,0,0],0);
+
+%  move(Cerealbox,[0.1,0.2,0.1]);
+
+
+
+
 
 %% Testing Animation for model Dobot
 
-DOB_T1 = transl(0.21,-0.142,0.1);           % Generating T-matrix
-DOB_q1 = JPikine(DOB_T1);                   % Generating Joint states                                              % Joint Angles for Brick Pickup Location (Brick 1)  
-Trej1 = jtraj(Dobot.model.getpos,DOB_q1,200);    % Creating trajectory                                                                % Trajectory from Start to Pick-up Location
+
+% Move to Cereal Box
+
+DOB_T = transl(0.1,0.3,0.18);           % Generating T-matrix
+DOB_q = JPikine(DOB_T);                   % Generating Joint states                                              % Joint Angles for Brick Pickup Location (Brick 1)  
+Trej = jtraj(Dobot.model.getpos,DOB_q,200);    % Creating trajectory                                                                % Trajectory from Start to Pick-up Location
 
 
 
 
 % Animate to Location
 for i = 1:200
-    Dobot.model.animate(Trej1(i,:));
+    Dobot.model.animate(Trej(i,:));
     
-    DOB_tr1 = Dobot.model.fkine(Trej1(i,:));
+    DOB_tr = Dobot.model.fkine(Trej(i,:));
     
     drawnow()
 end
 
-%% Testing Animation for stick Dobot
 
+% Transport Cereal Box
 
-
-DOB_T2 = transl(0.21,-0.142,0.1);         % Generating T-matrix
-DOB_q2 = JPikine(DOB_T2);                 % Generating Joint States                                                % Joint Angles for Brick Pickup Location (Brick 1)  
-Trej2 = jtraj(robot.getpos,DOB_q2,50);    % Creating trajectory                                                                  % Trajectory from Start to Pick-up Location
-
-
+DOB_T = transl(0.25,0.1,0.18);           % Generating T-matrix
+DOB_q = JPikine(DOB_T);                   % Generating Joint states                                              % Joint Angles for Brick Pickup Location (Brick 1)  
+Trej = jtraj(Dobot.model.getpos,DOB_q,200);    % Creating trajectory                                                                % Trajectory from Start to Pick-up Location
 
 
 % Animate to Location
-for i = 1:50
-    robot.animate(Trej2(i,:));
+for i = 1:200
+    Dobot.model.animate(Trej(i,:));
     
-    DOB_tr2 = robot.fkine(Trej2(i,:));
-    
+    DOB_tr = Dobot.model.fkine(Trej(i,:));
+    attach(Cerealbox,DOB_tr);
     drawnow()
 end
+
+
+
+%% Testing Animation for stick Dobot
+% 
+% 
+% 
+% DOB_T2 = transl(0.1,0.2,0.2);         % Generating T-matrix
+% DOB_fk2 = robot.fkine(qr); 
+% DOB_q2 = JPikine(DOB_T2);                 % Generating Joint States                                                % Joint Angles for Brick Pickup Location (Brick 1)  
+% Trej2 = jtraj(robot.getpos,DOB_q2,50);    % Creating trajectory                                                                  % Trajectory from Start to Pick-up Location
+% 
+% 
+% 
+% 
+% % Animate to Location
+% for i = 1:50
+%     robot.animate(Trej2(i,:));
+%     
+%     DOB_tr2 = robot.fkine(Trej2(i,:));
+%     
+%     drawnow()
+% end
 
 
  %% Ikine James Poon
@@ -131,15 +166,15 @@ function [newQ] = JPikine(EEmatrix)
 a2 = 0.135;                % Length from Joint 2 to Joint 3
 a3 = 0.147;                % Length from Joint 3 to Joint 4
 
-EEx = EEmatrix(1,4);              % End Effector X position
+EEx = EEmatrix(1,4)              % End Effector X position
 EEy = EEmatrix(2,4);              % End Effector Y position
 EEz = EEmatrix(3,4);              % End Effector Z position
 
 
 
-x = EEx - 0.075*cos(acos(EEmatrix(1,1)));              % X location for Joint 4 from Joint 2
-y = EEy - 0.075*sin(acos(EEmatrix(1,1)));              % Y location for Joint 4 from Joint 2
-z = EEz + 0.1 - 0.138 ;                                % Z location for Joint 4 from Joint 2
+x = EEx - 0.075*cos(atan(EEy/EEx))              % X location for Joint 4 from Joint 2
+y = EEy - 0.075*sin(atan(EEy/EEx))              % Y location for Joint 4 from Joint 2
+z = EEz + 0.1 - 0.138                           % Z location for Joint 4 from Joint 2
 
 l = sqrt(x^2 + y^2);
 D = sqrt(l^2 + z^2);
@@ -147,11 +182,11 @@ D = sqrt(l^2 + z^2);
 t1 = rad2deg(atan(z/l));
 t2 = rad2deg(acos((a2^2 + D^2 - a3^2) / (2 * a2 * D)));
 
-alpha = t1 + t2;
+alpha = t1 + t2
 beta = rad2deg(acos((a2^2 + a3^2 - D^2) / (2 * a2 * a3)));
 
-q1 = rad2deg(atan(y/x));
-q2 = (90 - alpha);
+q1 = rad2deg(atan(y/x))
+q2 = (90 - alpha)
 q3r = (180 - beta - alpha);
 q3m = 90 - q2 + q3r;
 q4 =  q3r;
