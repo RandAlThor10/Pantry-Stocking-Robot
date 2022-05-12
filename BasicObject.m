@@ -3,6 +3,7 @@
 classdef BasicObject
     properties
       location
+      rotation
       vertices
       transformedvertices
       ply
@@ -27,6 +28,7 @@ classdef BasicObject
          set(obj.ply,'Vertices',obj.transformedvertices(:,1:3));
         end
 
+     
         function attach(obj,EEmatrix) % Used for transportation by robot
 
          obj.location = EEmatrix;
