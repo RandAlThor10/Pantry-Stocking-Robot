@@ -1,10 +1,10 @@
  %% Dobot Stick Links (Not the same as the Model Link, Needs to be fixed to match)
 
 
+hold on;
 
 
-
-    L(1) = Link([0      0.138  0        -pi/2  0]);
+    L(1) = Link([0      -0.138  0        pi/2  0]);
     L(2) = Link([0      0      0.135    0      0]);   
     L(3) = Link([0      0      0.147    pi      0]);
     L(4) = Link([0      0      0.075    pi/2   0]);
@@ -35,7 +35,7 @@ for i = 1 : robot.n
     tr(:,:,i+1) = tr(:,:,i) * trotz(qr(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
 end
 
-
+robot.base = robot.base * trotx(pi)
 
 robot.plot(qr);
 robot.fkine(qr);

@@ -33,7 +33,7 @@ function GetDobot(self)
 %     end
 
 
-    L(1) = Link([0      0.138  0        -pi/2  0]);
+    L(1) = Link([0      -0.138  0       pi/2  0]);
     L(2) = Link([0      0      0.135    0      0]);   
     L(3) = Link([0      0      0.147    pi      0]);
     L(4) = Link([0      0      0.075    pi/2   0]);
@@ -61,7 +61,7 @@ function GetDobot(self)
   
     % Rotate robot to the correct orientation
 
-%   self.model.base = self.model.base  * troty(-pi/2);
+   self.model.base = self.model.base  * trotx(pi);
 
 end
 %% PlotAndColourRobot
