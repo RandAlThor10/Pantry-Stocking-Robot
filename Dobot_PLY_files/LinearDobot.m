@@ -69,12 +69,12 @@ end
 % colour them in if data is available 
 function PlotAndColourRobot(self)%robot,workspace)
     for linkIndex = 0:self.model.n
-        disp(['Index',num2str(linkIndex)]);
+%         disp(['Index',num2str(linkIndex)]);
         if self.useGripper && linkIndex == self.model.n
             [ faceData, vertexData, plyData{linkIndex+1} ] = plyread(['Dobotjoint',num2str(linkIndex),'Gripper.ply'],'tri'); %#ok<AGROW>
         else
             [ faceData, vertexData, plyData{linkIndex+1} ] = plyread(['Dobotjoint',num2str(linkIndex),'.ply'],'tri'); %#ok<AGROW>
-            disp(['Joint',num2str(linkIndex)]);
+%             disp(['Joint',num2str(linkIndex)]);
         end
         self.model.faces{linkIndex+1} = faceData;
         self.model.points{linkIndex+1} = vertexData;
