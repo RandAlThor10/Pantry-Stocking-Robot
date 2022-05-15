@@ -21,9 +21,9 @@ hold on;
 
 Cerealbox = BasicObject('Cereal_Box.ply',[-0.1,0.3,0.0],1);
 
-Shelf1 = BasicObject('Shelf.ply',[0.3,0,0],0);
+Shelf1 = BasicObject('Shelf.ply',[0.3,-0.1,0],0);
 
-Shelf2 = BasicObject('Shelf_2.ply',[0.035,-0.265,0],0);
+Shelf2 = BasicObject('Shelf_2.ply',[0.035,-0.35,0],0);
 
 Fire_Extinguisher = BasicObject('Fireextinguisher.ply',[0.3,0.25,0],0);
 
@@ -39,7 +39,7 @@ Barrier4 = BasicObject('Barrier_2.ply',[-0.4,0.2,0],0);
 
 Barrier5 = BasicObject('Barrier_2.ply',[0.4,0.2,0],0);
 
-Barrier6 = BasicObject('Barrier_1.ply',[-0.2,-0.4,0],0);
+Barrier6 = BasicObject('Barrier_1.ply',[-0.2,-0.5,0],0);
 
 Box = BasicObject('Box.ply',[-0.15,0.25,0],0);
 
