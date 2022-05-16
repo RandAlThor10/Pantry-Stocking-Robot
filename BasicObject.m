@@ -15,7 +15,8 @@ classdef BasicObject
           obj.location = val2;
           obj.vertices = get(obj.ply,'Vertices');
           obj.type = val3;
-          obj.transformedvertices = [obj.vertices, ones(size(obj.vertices,1),1)] *transl(obj.location(1,1),obj.location(1,2),obj.location(1,3))';
+          temp = [obj.vertices, ones(size(obj.vertices,1),1)] *transl(obj.location(1,1),obj.location(1,2),obj.location(1,3))';
+          obj.transformedvertices = temp(:,1:3);
           set(obj.ply,'Vertices',obj.transformedvertices(:,1:3));
           
          
