@@ -43,12 +43,13 @@ Barrier6 = BasicObject('Barrier_1.ply',[-0.2,-0.5,0],0);
 
 Box = BasicObject('Box.ply',[-0.15,0.25,0],0);
 
+Objarray = [Cerealbox, Shelf1, Shelf2, Fire_Extinguisher, SauceBottle, Barrier1 , Barrier2, Barrier3, Barrier4, Barrier5, Barrier6, Box];
 
 
 %run the robot
 moving = false;
 
-while true
+while any([Objarray.type]) %continue program until all objects are type 0
 
 %Look at GUI
 
