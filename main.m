@@ -3,31 +3,36 @@ clear
 
 %Load robot
 
-Dobot = LaunchDobot();
+Dobot = LaunchDobot([0,0,0]);
 
 %Load the Environment
 
 hold on;
-axis([-0.6 0.6,-0.6 0.6,0 0.6]);
+axis([-0.6 0.6,-0.6 0.6,0 0.7]);
 surf([-0.6,-0.6;0.6,0.6],[-0.6,0.6;-0.6,0.6],[0,0;0,0],'CData',imread('floor.jpg'),'FaceColor','texturemap');
-surf([0.6,0.6;0.6,0.6],[-0.6,0.6;-0.6,0.6],[0.6,0.6;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
-surf([-0.6,0.6;-0.6,0.6],[-0.6,-0.6;-0.6,-0.6],[0.6,0.6;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
+surf([0.6,0.6;0.6,0.6],[-0.6,0.6;-0.6,0.6],[0.7,0.7;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
+surf([-0.6,0.6;-0.6,0.6],[-0.6,-0.6;-0.6,-0.6],[0.7,0.7;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
 surf([0.6,0.6;0.6,0.6],[0.5,0.3;0.5,0.3],[0.4,0.4;0.25,0.25],'CData',imread('Warning_sign.jpg'),'FaceColor','texturemap');
-
 
 % Objects
 
 hold on;
 
+
+% Moveable
 Cerealbox = BasicObject('Cereal_Box.ply',[-0.1,0.3,0.0],1);
 
-Shelf1 = BasicObject('Shelf.ply',[0.3,-0.1,0],0);
+Muselibox = BasicObject('Museli_Box.ply',[-0.175,0.2,0],0);
 
-Shelf2 = BasicObject('Shelf_2.ply',[0.035,-0.35,0],0);
+SauceBottle = BasicObject('Sauce_Bottle.ply',[-0.25,0.25,0],0);
+
+
+% Environment
+Shelf1 = BasicObject('Shelf.ply',[0.34,0,0],0);
+
+Shelf2 = BasicObject('Shelf_2.ply',[0.035,-0.34,0],0);
 
 Fire_Extinguisher = BasicObject('Fireextinguisher.ply',[0.3,0.25,0],0);
-
-SauceBottle = BasicObject('Sauce_Bottle.ply',[-0.25,0.2,0],0);
 
 Barrier1 = BasicObject('Barrier_1.ply',[0.2,0.4,0],0);
 
@@ -37,13 +42,19 @@ Barrier3 = BasicObject('Barrier_2.ply',[-0.4,-0.2,0],0);
 
 Barrier4 = BasicObject('Barrier_2.ply',[-0.4,0.2,0],0);
 
-Barrier5 = BasicObject('Barrier_2.ply',[0.4,0.2,0],0);
+Barrier5 = BasicObject('Barrier_2.ply',[0.45,0.2,0],0);
 
 Barrier6 = BasicObject('Barrier_1.ply',[-0.2,-0.5,0],0);
 
+Shelf_Box1 = BasicObject('Stationary_Box.ply',[0.34,-0.1,0],0);
+
+Shelf_Box2 = BasicObject('Stationary_Box.ply',[0.34,-0.17,0],0);
+
 Box = BasicObject('Box.ply',[-0.15,0.25,0],0);
 
-Objarray = [Cerealbox, Shelf1, Shelf2, Fire_Extinguisher, SauceBottle, Barrier1 , Barrier2, Barrier3, Barrier4, Barrier5, Barrier6, Box];
+
+
+Objarray = [Cerealbox, Muselibox, SauceBottle, Shelf1, Shelf2, Fire_Extinguisher, Barrier1, Barrier2, Barrier3, Barrier4, Barrier5, Barrier6, Shelf_Box1, Shelf_Box2, Box];
 
 %run the robot
 moving = false;
