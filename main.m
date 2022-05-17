@@ -10,11 +10,11 @@ Dobot = LaunchDobot([0,0,0]);
 %Load the Environment
 
 hold on;
-axis([-0.6 0.6,-0.6 0.6,0 0.7]);
-surf([-0.6,-0.6;0.6,0.6],[-0.6,0.6;-0.6,0.6],[0,0;0,0],'CData',imread('floor.jpg'),'FaceColor','texturemap');
-surf([0.6,0.6;0.6,0.6],[-0.6,0.6;-0.6,0.6],[0.7,0.7;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
-surf([-0.6,0.6;-0.6,0.6],[-0.6,-0.6;-0.6,-0.6],[0.7,0.7;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
-surf([0.6,0.6;0.6,0.6],[0.5,0.3;0.5,0.3],[0.4,0.4;0.25,0.25],'CData',imread('Warning_sign.jpg'),'FaceColor','texturemap');
+axis([-0.6 0.4,-0.6 0.4,0 0.7]);
+surf([-0.6,-0.6;0.4,0.4],[-0.6,0.6;-0.6,0.6],[0,0;0,0],'CData',imread('floor.jpg'),'FaceColor','texturemap');
+surf([0.4,0.4;0.4,0.4],[-0.6,0.6;-0.6,0.6],[0.7,0.7;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
+surf([-0.6,0.4;-0.6,0.4],[-0.6,-0.6;-0.6,-0.6],[0.7,0.7;0,0],'CData',imread('Wall.jpg'),'FaceColor','texturemap');
+surf([0.4,0.4;0.4,0.4],[0.1,-0.1;0.1,-0.1],[0.5,0.5;0.35,0.35],'CData',imread('Warning_sign.jpg'),'FaceColor','texturemap');
 
 % Objects
 
@@ -44,7 +44,7 @@ Barrier3 = BasicObject('Barrier_2.ply',[-0.4,-0.2,0],0,[],[]);
 
 Barrier4 = BasicObject('Barrier_2.ply',[-0.4,0.2,0],0,[],[]);
 
-Barrier5 = BasicObject('Barrier_2.ply',[0.45,0.2,0],0,[],[]);
+%Barrier5 = BasicObject('Barrier_2.ply',[0.45,0.2,0],0,[],[]);
 
 Barrier6 = BasicObject('Barrier_1.ply',[-0.2,-0.5,0],0,[],[]);
 
@@ -56,7 +56,7 @@ Box = BasicObject('Box.ply',[-0.15,0.25,0],0,[],[]);
 
 
 
-Objarray = [Cerealbox, Muselibox, SauceBottle, Shelf1, Shelf2, Fire_Extinguisher, Barrier1, Barrier2, Barrier3, Barrier4, Barrier5, Barrier6, Shelf_Box1, Shelf_Box2, Box];
+Objarray = [Cerealbox, Muselibox, SauceBottle, Shelf1, Shelf2, Fire_Extinguisher, Barrier1, Barrier2, Barrier3, Barrier4, Barrier6, Shelf_Box1, Shelf_Box2, Box];
 
 %run the robot
 moving = false;
