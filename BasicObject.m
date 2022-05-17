@@ -3,6 +3,7 @@
 classdef BasicObject
     properties
       location
+      endlocation
       rotation
       vertices
       transformedvertices
@@ -10,9 +11,10 @@ classdef BasicObject
       type %Static = 0 or pantry item to be moved = 1
     end
     methods
-        function obj = BasicObject(val1,val2,val3)
+        function obj = BasicObject(val1,val2,val3,val4)
           obj.ply = PlaceObject(val1);
           obj.location = val2;
+          obj.endlocation = val4;
           obj.vertices = get(obj.ply,'Vertices');
           obj.type = val3;
           temp = [obj.vertices, ones(size(obj.vertices,1),1)] *transl(obj.location(1,1),obj.location(1,2),obj.location(1,3))';
