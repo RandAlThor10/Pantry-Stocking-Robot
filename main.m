@@ -24,9 +24,9 @@ hold on;
 % Moveable
 Cerealbox = BasicObject('Cereal_Box.ply',[-0.1,0.3,0.0],1,[0.3,0.135,0.125],[0.2,0.125,0.13]);
 
-Muselibox = BasicObject('Museli_Box.ply',[-0.175,0.2,0],1,[0.1,-0.33,0.11],[0.2,0,0.12]);
+Muselibox = BasicObject('Museli_Box.ply',[-0.175,0.2,0],1,[0.1,-0.33,0.11],[0.18,-0.13,0.12]);
 
-SauceBottle = BasicObject('Sauce_Can.ply',[-0.1,0.2,0],1,[0.3,-0.1,0.1],[0.2,0.15,0.13]);
+SauceBottle = BasicObject('Sauce_Can.ply',[-0.1,0.2,0],1,[0.3,-0.1,0.1],[0.18,0.1,0.13]);
 
 
 % Environment
@@ -48,9 +48,9 @@ Barrier5 = BasicObject('Barrier_2.ply',[0.45,0.2,0],0,[],[]);
 
 Barrier6 = BasicObject('Barrier_1.ply',[-0.2,-0.5,0],0,[],[]);
 
-Shelf_Box1 = BasicObject('Stationary_Box.ply',[0.34,0.17,0],0,[],[]);
+Shelf_Box1 = BasicObject('Stationary_Box.ply',[0.32,0.17,0],0,[],[]);
 
-Shelf_Box2 = BasicObject('Stationary_Box.ply',[0.34,0.1,0],0,[],[]);
+Shelf_Box2 = BasicObject('Stationary_Box.ply',[0.32,0.1,0],0,[],[]);
 
 Box = BasicObject('Box.ply',[-0.15,0.25,0],0,[],[]);
 
@@ -66,6 +66,7 @@ steps = 200;
 Lift = false;
 Waypoint = false;
 Endlocation = false;
+NextObj = false;
 
 while any([Objarray.type]) %continue program until all objects are type 0
     T = Dobot.model.fkine(Dobot.model.getpos);
@@ -84,7 +85,7 @@ while any([Objarray.type]) %continue program until all objects are type 0
          end
          % Once complete create new traj for moving the obj
          Lift = true;
-         transporting = 1;
+         transporting = true;
 
       elseif transporting == true
 
@@ -110,6 +111,7 @@ while any([Objarray.type]) %continue program until all objects are type 0
           DOB_q = JPikine(DOB_T); 
           Traj = jtraj(Dobot.model.getpos,DOB_q,steps);
           Endlocation = false;
+          NextObj = true;
 
         end
 
@@ -125,18 +127,40 @@ while any([Objarray.type]) %continue program until all objects are type 0
        end
         
       
+       if NextObj == true
+        transporting = false;
+        moving = false;
+        Objarray(targetindex).type = 0;                                      % Become Static
+        
+        % Move to Safe Pose
+
+        if targetindex == 2
+
+        DOB_T = transl(0.1,-0.18,0.125);                                        % Generating T-matrix
+        DOB_q = JPikine(DOB_T); 
+        Traj = jtraj(Dobot.model.getpos,DOB_q,steps);
+
+        else
+        DOB_T = transl(0.18,0.01,0.075);                                        % Generating T-matrix
+        DOB_q = JPikine(DOB_T); 
+        Traj = jtraj(Dobot.model.getpos,DOB_q,steps);
+
+        end
+
+        for x = 1:steps
+            Dobot.model.animate(Traj(x,:));
+            DOB_tr = Dobot.model.fkine(Traj(x,:));  
+            drawnow()
+        end
        
-       transporting = false;
-       moving = false;
-       Objarray(targetindex).type = 0;                                      % Become Static
-       
+       end
 
      end
        % move until finished
     elseif moving == false 
-        %set xyz target, immediately above object to grasp
+       
       
-            %move to the next object
+            % Move to the next object
             for i = 1:size(Objarray,2) %find closest object to be moved
                 if Objarray(i).type == 0 %obj that doesn't need to be moved
                     distance(i) = 9001;
@@ -146,7 +170,7 @@ while any([Objarray.type]) %continue program until all objects are type 0
             end
             [~,targetindex] = min(distance);
             % Found closest Obj
-            transporting = 0;
+            transporting = false;
             % Trajectory to the  Obj location
             
             currentT = Dobot.model.fkine(Dobot.model.getpos); 
@@ -156,8 +180,10 @@ while any([Objarray.type]) %continue program until all objects are type 0
             %[Traj, steps] =  PlanTraj(A(1:3,4)', Objarray(targetindex).location, Dobot.model, Dobot.model.getpos);
             
             Traj = jtraj(Dobot.model.getpos,DOB_q,steps);                      % Creating trajectory
-
+            
+            NextObj = false;
             moving = true;
+            
      
     elseif moving == "manual"
         
