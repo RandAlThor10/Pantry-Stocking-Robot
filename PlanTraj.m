@@ -2,10 +2,11 @@
 function [traj, steps] = PlanTraj(start,finish,model,startpose) 
 %start(x,y,z), finish(x,y,z), kinematic model, startpose (q)
 
-speed = 0.1; %approx speed in m/s
+speed = 0.001; %approx speed in m/s
 distance = sqrt(sum((start-finish).^2));
 steps = ceil(distance/speed);
-epsilon = 0.1;      % Threshold value for manipulability/Damped Least Squares
+deltaT = distance/speed;
+epsilon = 0.01;      % Threshold value for manipulability/Damped Least Squares
 W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector
 
 % 1.2) Allocate array data
@@ -28,7 +29,8 @@ for i=1:steps
     theta(3,i) = 0;             % Yaw angle
 end
 
-qMatrix(1,:) = startpose;   %First joint state
+
+qMatrix(1,:) = JPikine(model.fkine(startpose));   %First joint state
 
 % 1.4) Track the trajectory with RMRC
 for i = 1:steps-1
@@ -43,7 +45,8 @@ for i = 1:steps-1
     deltaTheta = tr2rpy(Rd*Ra');                                            % Convert rotation matrix to RPY angles
     xdot = W*[linear_velocity;angular_velocity];                          	% Calculate end-effector velocity to reach next waypoint.
     J = model.jacob0(qMatrix(i,:));                 % Get Jacobian at current joint state
-    m(i) = sqrt(det(J*J'));
+    J2 = J(1:3,1:3);
+    m(i) = sqrt(det(J2*J2'));
     if m(i) < epsilon  % If manipulability is less than given threshold
         lambda = (1 - m(i)/epsilon)*5E-2;
     else
@@ -58,11 +61,11 @@ for i = 1:steps-1
             qdot(i,j) = 0; % Stop the motor
         end
     end
-    T = model.fkine(qMatrix(i,:) + deltaT*qdot(i,:));
-    qMatrix(i+1,:) = JPikine(T,qMatrix(i,:));
+%      T = model.fkine(qMatrix(i,:) + deltaT*qdot(i,:));
+%     qMatrix(i+1,:) = JPikine(T);
+     
     
-    
-    %qMatrix(i+1,:) = qMatrix(i,:) + deltaT*qdot(i,:);                         	% Update next joint state based on joint velocities
+    qMatrix(i+1,:) = qMatrix(i,:) + deltaT*qdot(i,:);                         	% Update next joint state based on joint velocities
     
     positionError(:,i) = x(:,i+1) - T(1:3,4);                               % For plotting
     angleError(:,i) = deltaTheta;                                           % For plotting

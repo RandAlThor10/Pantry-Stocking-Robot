@@ -10,6 +10,8 @@ function Dobot = LaunchDobot(location) % Location = [x,y,z]
 
     Dobot.model.base = transl(location(1,1),location(1,2),location(1,3)) * trotx(pi);
 
+   
+
 %     tr1 = zeros(4,4,Dobot.model.n);
 %     tr1(:,:,1) = Dobot.model.base;
 %     L = Dobot.model.links;
