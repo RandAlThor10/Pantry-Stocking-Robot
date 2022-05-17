@@ -1,5 +1,5 @@
 %function for planning the dobot movement in XYZ avoiding obstacles
-function [traj, steps, target] = PlanTraj(start,finish,model,startpose) 
+function [traj, steps] = PlanTraj(start,finish,model,startpose) 
 %start(x,y,z), finish(x,y,z), kinematic model, startpose (q)
 
 speed = 0.1; %approx speed in m/s
@@ -68,11 +68,11 @@ for i = 1:steps-1
     angleError(:,i) = deltaTheta;                                           % For plotting
 end
 
-
+traj  = qMatrix;
 
 %perform collision detection
 
-traj = DobotCollision();
+% = DobotCollision();
 %if collision with objects
     %traj1 = PlanTraj to pose that avoids it
     %traj2 = PlanTraj from waypoint pos to finish
