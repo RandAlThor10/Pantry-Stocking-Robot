@@ -1,7 +1,6 @@
 function [cam,warning] = DobotCam(setup, model, cam)
 
 %% Setup
-setup = 1;
 warning = false;
 if setup == 1
 % Add the camera
@@ -25,6 +24,6 @@ cam.hold(true);
 cam.plot(Centrepoint,'Tcam',cam.T,'o');
 in = inpolygon(Centrepoint(1), Centrepoint(2), uv(1,:), uv(2,:));
 dist = sqrt(sum((cam.centre()'-[0.6,0.4,0.325]).^2)); %distance of cam from sign
-if distance < 0.1 && in == 1
+if dist < 0.1 && in == 1
     warning = true;
 end
