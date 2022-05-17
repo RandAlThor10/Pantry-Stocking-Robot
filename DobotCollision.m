@@ -2,22 +2,11 @@
 function [collision] = DobotCollision(model,Objarray) 
 
 
-% collision = false;
-% for i = 1:6 %check every link mesh for collision
-%     for a = 1:size(Objarray,2)
-%         %check link i for collision with mesh a
-%         Objarray(a).transformedvertices
-%         if collision == true
-%             collision = true; 
-%         end
-%     end
-% end
-% end
 
-links = model.model.links;
-q=model.model.getpos;
+links = model.links;
+q=model.getpos;
 transforms = zeros(4, 4, length(links) + 1);
-transforms(:,:,1) = model.model.base;
+transforms(:,:,1) = model.base;
 
 for i = 1:length(links)
     L = links(1,i);
@@ -53,23 +42,21 @@ for i=1:(size(transforms,3)-2)
 
 end
 
-isCollide=0;
+collision=false;
 vertMat=vertcat(Objarray.transformedvertices);
 
-for i=1:size(vertMat,1)
-    point=vertMat(i,:);
+for i=1:5:size(vertMat,1)
+    
     for j=1:(size(transforms,3)-2)
 
-        dist=(point-C(j,:))*A(:,:,j)*(point-C(j,:))';
+        dist=(vertMat(i,:)-C(j,:))*A(:,:,j)*(vertMat(i,:)-C(j,:))';
         if (dist<=1)
-            isCollide=1;
+            collision=true;
             break;
         end
     
     end
-    if (isCollide==1)
+    if (collision==true)
         break;
     end
-
 end
-collision=isCollide;
