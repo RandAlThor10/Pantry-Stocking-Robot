@@ -22,11 +22,11 @@ while any([Objarray.type]) %continue program until all objects are type 0
             Dobot.model.animate(Traj(x,:));
             [cam,warning] = DobotCam(0, Dobot.model, cam);
             if warning
-                print("Warning sign!! Robot stopped for safety.")
+                disp("Warning sign!! Robot stopped for safety.")
                 return
             end
             if DobotCollision(Dobot.model,Objarray)
-                print("Collision!! Robot stopped for safety.")
+                disp("Collision!! Robot stopped for safety.")
                 return
             end
             drawnow()
@@ -71,11 +71,11 @@ while any([Objarray.type]) %continue program until all objects are type 0
             Dobot.model.animate(Traj(x,:));
             [cam,warning] = DobotCam(0, Dobot.model, cam);
             if warning
-                print("Warning sign!! Robot stopped for safety.")
+                disp("Warning sign!! Robot stopped for safety.")
                 return
             end
             if DobotCollision(Dobot.model,Objarray)
-                print("Collision!! Robot stopped for safety.")
+                disp("Collision!! Robot stopped for safety.")
                 return
             end
             DOB_tr = Dobot.model.fkine(Traj(x,:));
@@ -108,11 +108,11 @@ while any([Objarray.type]) %continue program until all objects are type 0
             Dobot.model.animate(Traj(x,:));
             [cam,warning] = DobotCam(0, Dobot.model, cam);
             if warning
-                print("Warning sign!! Robot stopped for safety.")
+                disp("Warning sign!! Robot stopped for safety.")
                 return
             end
             if DobotCollision(Dobot.model,Objarray)
-                print("Collision!! Robot stopped for safety.")
+                disp("Collision!! Robot stopped for safety.")
                 return
             end
             DOB_tr = Dobot.model.fkine(Traj(x,:));  
